@@ -50,7 +50,7 @@
 
 ---
 
-### 🚀🚀🚀 STEP 04
+### 🚀🚀🚀🚀 STEP 04
 
 <div align="middle">
   <img src="./asset/week-04.gif" />
