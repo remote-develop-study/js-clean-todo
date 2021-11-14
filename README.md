@@ -13,7 +13,7 @@
 ### 🚀 STEP 01
 
 <div align="middle">
-  <img src="./asset/week-02.gif" />
+  <img src="./asset/week-01.gif" />
 </div>
 
 <br />
