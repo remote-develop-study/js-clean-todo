@@ -10,5 +10,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [],
-  rules: {},
+  rules: {
+    'no-param-reassign': 0,
+  },
 };
