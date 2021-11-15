@@ -25,7 +25,14 @@ const addTodoItem = ({ key, target }) => {
   target.value = '';
 };
 
+const removeTodoItem = ({ target }) => {
+  if (!target.classList.contains('destroy')) return;
+
+  target.parentNode.parentNode.remove();
+};
+
 const app = () => {
+  $todoList.addEventListener('click', removeTodoItem);
   $newTodo.addEventListener('keyup', addTodoItem);
 };
 
