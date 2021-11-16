@@ -29,3 +29,9 @@ $form.addEventListener("submit", (event) => {
 
   clearInput();
 });
+
+$todoList.addEventListener("click", (event) => {
+  if (event.target.closest(".destroy")) {
+    event.target.closest("li").remove();
+  }
+});
