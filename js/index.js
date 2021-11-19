@@ -7,12 +7,17 @@
 // - [x] 사용자 입력값이 빈 값이라면 추가되지 않는다.
 
 // Todo List 삭제
-// - [ ] Todo List의 x버튼을 이용해서 해당 엘리먼트를 삭제하기
-// - [ ] 총 item 갯수를 count하여 하단에 보여준다.
+// - [x] Todo List의 x버튼을 이용해서 해당 엘리먼트를 삭제하기
+// - [x] 총 item 갯수를 count하여 하단에 보여준다.
 
 const $ = (selector) => document.querySelector(selector)
 
 function App() {
+  const updateItemCount = () => {
+    const todoCount = $('#todo-list').querySelectorAll('li').length
+    $('.todo-count strong').innerText = todoCount
+  }
+
   // enter를 누르면 item의 이름을 입력받는다.
   $('#new-todo-title').addEventListener('keypress', (e) => {
     if ($('#new-todo-title').value === '') {
@@ -37,10 +42,17 @@ function App() {
         todoTemplate(newTodoTitle)
       )
 
-      const todoCount = $('#todo-list').querySelectorAll('li').length
-      $('.todo-count strong').innerText = todoCount
-
       $('#new-todo-title').value = ''
+
+      updateItemCount()
+    }
+  })
+
+  $('#todo-list').addEventListener('click', (e) => {
+    if (e.target.classList.contains('destroy')) {
+      e.target.closest('li').remove()
+
+      updateItemCount()
     }
   })
 }
