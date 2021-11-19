@@ -23,8 +23,13 @@ const addTodoItem = ({ key, target }) => {
 	return;
 };
 
+const deleteTodoItem = ({ target }) => {
+	if (target.classList.contains('destroy')) target.closest('li').remove();
+};
+
 const addEvents = () => {
 	$todoInput.addEventListener('keyup', addTodoItem);
+	$todoList.addEventListener('click', deleteTodoItem);
 };
 
 window.onload = () => addEvents();
