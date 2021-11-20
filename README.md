@@ -18,7 +18,7 @@
 
 <br />
 
-- [ ] Todo List에 Item을 키보드로 입력하여 추가하기
+- [x] Todo List에 Item을 키보드로 입력하여 추가하기
 - [ ] Todo List의 x버튼을 이용해서 해당 엘리먼트를 삭제하기
 
 ---
