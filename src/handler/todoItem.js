@@ -1,10 +1,10 @@
 import { todoItemTemplate } from '../template/template';
-import { isContain } from '../utils/validator';
+import { isContain, isEmptyString } from '../utils/validator';
 
 export const addTodoItem = ({ key, target }, $todoList) => {
   if (key !== 'Enter') return;
 
-  if (target.value.trim().length < 1) return;
+  if (isEmptyString(target.value)) return;
 
   $todoList.insertAdjacentHTML(
     'beforeend',
