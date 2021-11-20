@@ -1,7 +1,8 @@
 import { todoItem } from "./templates/todoItem.js";
+import { ELEMENT } from "../constants/dom.js";
 
-const todoForm = document.querySelector("#todo-input-form");
-const todoList = document.querySelector("#todo-list");
+const todoForm = document.querySelector(ELEMENT.TODO_FORM);
+const todoList = document.querySelector(ELEMENT.TODO_LIST);
 
 const resetInput = () => todoForm.reset();
 
@@ -12,7 +13,7 @@ const addTodoList = (newTodoTitle) => {
 const onAddTodoListHandler = (event) => {
   event.preventDefault();
 
-  const inputValue = event.target["new-todo-title"].value.trim();
+  const inputValue = event.target[ELEMENT.NEW_TODO].value.trim();
   if (!inputValue) return;
 
   addTodoList(inputValue);
@@ -21,12 +22,11 @@ const onAddTodoListHandler = (event) => {
 
 const onDeleteTodoItemHandler = (event) => {
   const eventTarget = event.target.className;
-  if (eventTarget !== "destroy") return;
+  if (eventTarget !== ELEMENT.DLEETE_BUTTON) return;
 
   const targetTodoItem = event.target.parentNode;
   targetTodoItem.remove();
 };
 
 todoForm.addEventListener("submit", onAddTodoListHandler);
-
 todoList.addEventListener("click", onDeleteTodoItemHandler);
