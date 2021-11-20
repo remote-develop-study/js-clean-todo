@@ -4,7 +4,7 @@ export const todoItem = (title) => {
       <div class="view">
         <input class="toggle" type="checkbox" />
         <label class="label">${title}</label>
-        <button class="destroy"></button>
+        <button class="destroy" type="button"></button>
       </div>
       <input class="edit" value="새로운 타이틀" />
     </li>`;

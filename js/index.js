@@ -19,4 +19,14 @@ const onAddTodoListHandler = (event) => {
   resetInput();
 };
 
+const onDeleteTodoItemHandler = (event) => {
+  const eventTarget = event.target.className;
+  if (eventTarget !== "destroy") return;
+
+  const targetTodoItem = event.target.parentNode;
+  targetTodoItem.remove();
+};
+
 todoForm.addEventListener("submit", onAddTodoListHandler);
+
+todoList.addEventListener("click", onDeleteTodoItemHandler);
