@@ -1,0 +1,13 @@
+{
+  "name": "js-clean-todo",
+  "version": "0.0.1",
+  "description": "자바스크립트 클린코드 투두리스트 프로젝트입니다.",
+  "author": "Eunhyun-Cho <kgshdgeh@gmail.com>",
+  "packageManager": "yarn@3.1.0",
+  "devDependencies": {
+    "eslint": "^8.2.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
+  }
+}
