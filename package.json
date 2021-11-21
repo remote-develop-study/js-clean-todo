@@ -1,0 +1,33 @@
+{
+  "name": "clean-yujo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/yujo11/js-clean-todo.git",
+  "license": "MIT",
+  "author": {
+    "name": "yujo",
+    "email": "yujo <yujo.dev@gmail.com>",
+    "url": "https://yujo11.github.io/"
+  },
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "@babel/preset-env": "^7.16.0",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.0.2",
+    "parcel-bundler": "^1.12.5",
+    "prettier": "^2.4.1"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache",
+    "*.{js,css,md,html,json}": "prettier --write"
+  }
+}
