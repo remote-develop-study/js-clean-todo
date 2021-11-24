@@ -1,5 +1,5 @@
-import App from "./App.js";
+import App from "./src/components/App.js";
 
-import { $ } from "./utils/selector.js";
+import { $ } from "./src/utils/selector.js";
 
 new App({ $app: $(".todoapp") });
