@@ -30,10 +30,12 @@ export default class TodoList {
       <ul>
         ${this.state.list
           .map(
-            ({ id, name, checked }) => `
-        <li id="${id}" class="${this.state.mode}">
+            ({ id, name, mode }) => `
+        <li id="${id}" class="${mode}">
           <div>
-            <input class="toggle" type="checkbox" ${checked ? "checked" : ""} />
+            <input class="toggle" type="checkbox" ${
+              mode === "completed" ? "checked" : ""
+            } />
             <label class="label">${name}</label>
             <button class="destroy"></button>
           </div>
