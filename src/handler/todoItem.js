@@ -1,5 +1,5 @@
 import { todoItemTemplate } from '../template/template';
-import { isContain, isEmptyString } from '../utils/validator';
+import { isEmptyString } from '../utils/validator';
 
 export const addTodoItem = ({ key, target }, $todoList) => {
   if (key !== 'Enter') return;
@@ -15,7 +15,7 @@ export const addTodoItem = ({ key, target }, $todoList) => {
 };
 
 export const removeTodoItem = ({ target }) => {
-  if (!isContain(target, 'destroy')) return;
+  if (!target.classList.contains('destroy')) return;
 
   target.parentNode.parentNode.remove();
 };
