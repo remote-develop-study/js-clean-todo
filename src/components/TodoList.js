@@ -1,11 +1,8 @@
 import { createElement } from "../utils/domCreator.js";
 
 export default class TodoList {
-  constructor({ $app, mode, list }) {
-    this.state = {
-      mode,
-      list,
-    };
+  constructor({ $app, todos }) {
+    this.state = todos;
 
     this.$list = createElement("ul");
     this.$list.className = "todo-list";
@@ -28,7 +25,7 @@ export default class TodoList {
   template() {
     return `
       <ul>
-        ${this.state.list
+        ${this.state
           .map(
             ({ id, name, mode }) => `
         <li id="${id}" class="${mode}">

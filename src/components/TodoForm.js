@@ -1,10 +1,22 @@
-import { createElement } from "../utils/domCreator.js";
-
 export default class TodoForm {
-  constructor({ $app }) {
-    this.$form = createElement("form");
-    this.$form.id = "todo-form";
-    this.$form.innerHTML = `
+  state = "";
+
+  constructor({ $target, onSubmit }) {
+    this.$target = $target;
+    this.onSubmit = onSubmit;
+
+    this.render();
+    this.setEvent();
+  }
+
+  setState(nextState) {
+    this.state = nextState;
+
+    this.componentDidMount();
+  }
+
+  template() {
+    return `
       <input
         id="new-todo-title"
         class="new-todo"
@@ -12,7 +24,38 @@ export default class TodoForm {
         autofocus
       />
     `;
+  }
 
-    $app.appendChild(this.$form);
+  render() {
+    this.$target.innerHTML = this.template();
+    this.componentDidMount();
+  }
+
+  componentDidMount() {
+    this.$target.querySelector("input").value = this.state;
+  }
+
+  setEvent() {
+    this.$target.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      this.onSubmit(this.state);
+
+      this.clearInput();
+    });
+
+    this.$target.addEventListener("input", (event) => {
+      if (event.target.closest("input")) {
+        const {
+          target: { value },
+        } = event;
+
+        this.setState(value);
+      }
+    });
+  }
+
+  clearInput() {
+    this.setState("");
   }
 }
