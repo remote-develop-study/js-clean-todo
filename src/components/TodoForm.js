@@ -1,18 +1,10 @@
-export default class TodoForm {
-  state = "";
+import Component from "./Component.js";
 
-  constructor({ $target, onSubmit }) {
-    this.$target = $target;
+export default class TodoForm extends Component {
+  constructor({ $app, initialState, onSubmit }) {
+    super({ $app, initialState });
+
     this.onSubmit = onSubmit;
-
-    this.render();
-    this.setEvent();
-  }
-
-  setState(nextState) {
-    this.state = nextState;
-
-    this.componentDidMount();
   }
 
   template() {
@@ -26,17 +18,12 @@ export default class TodoForm {
     `;
   }
 
-  render() {
-    this.$target.innerHTML = this.template();
-    this.componentDidMount();
-  }
-
-  componentDidMount() {
-    this.$target.querySelector("input").value = this.state;
+  setState(nextState) {
+    this.state = nextState;
   }
 
   setEvent() {
-    this.$target.addEventListener("submit", (event) => {
+    this.$app.addEventListener("submit", (event) => {
       event.preventDefault();
 
       this.onSubmit(this.state);
@@ -44,7 +31,7 @@ export default class TodoForm {
       this.clearInput();
     });
 
-    this.$target.addEventListener("input", (event) => {
+    this.$app.addEventListener("input", (event) => {
       if (event.target.closest("input")) {
         const {
           target: { value },
@@ -57,5 +44,7 @@ export default class TodoForm {
 
   clearInput() {
     this.setState("");
+
+    super.render();
   }
 }

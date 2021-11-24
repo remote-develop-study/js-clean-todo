@@ -1,28 +1,17 @@
-import { createElement } from "../utils/domCreator.js";
+import { $ } from "../utils/selector.js";
 
-export default class TodoList {
-  constructor({ $app, todos, onTodoDelete }) {
-    this.state = todos;
+import Component from "./Component.js";
 
-    this.$list = createElement("ul");
-    this.$list.className = "todo-list";
+export default class TodoList extends Component {
+  constructor({ $app, initialState, onTodoDelete }) {
+    super({ $app, initialState });
 
     this.onTodoDelete = onTodoDelete;
-
-    $app.appendChild(this.$list);
-
-    this.render();
-    this.setEvent();
-  }
-
-  setState(nextState) {
-    this.state = nextState;
-
-    this.render();
   }
 
   setEvent() {
-    this.$list.addEventListener("click", (e) => {
+    $("#todo-list").addEventListener("click", (e) => {
+      console.log("클릭 ! ");
       if (e.target.closest(".destroy")) {
         const id = e.target.closest("li").id;
 
@@ -31,13 +20,9 @@ export default class TodoList {
     });
   }
 
-  render() {
-    this.$list.innerHTML = this.template();
-  }
-
   template() {
     return `
-      <ul>
+      <ul id="todo-list" class="todo-list">
         ${this.state
           .map(
             ({ id, name, mode }) => `

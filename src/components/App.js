@@ -5,50 +5,43 @@ import getMaxNumber from "../utils/getMaxNumber.js";
 import TodoCountContainer from "./TodoCountContainer.js";
 import TodoForm from "./TodoForm.js";
 import TodoList from "./TodoList.js";
-export default class App {
-  state = {
-    todos: [
-      {
-        id: 1,
-        name: "과제하기",
-        mode: "completed",
-      },
-      {
-        id: 2,
-        name: "과제하기",
-        mode: "view",
-      },
-    ],
-  };
+import Component from "./Component.js";
 
-  constructor({ $app }) {
-    this.$app = $app;
-    this.handleSubmit = this.handleSubmit.bind(this);
+export default class App extends Component {
+  constructor({ $app, initialState }) {
+    super({ $app, initialState });
+  }
 
-    $app.innerHTML = `
+  template() {
+    return `
       <h1>TODOS</h1>
       <form id="todo-form"></form>
-      <main id="todo-form"></main>
+      <main></main>
     `;
-
-    this.render();
   }
 
   setState(nextState) {
-    this.state = nextState;
+    super.setState(nextState);
 
     this.todoList.setState(this.state.todos);
   }
 
   render() {
+    super.render();
+
+    this.appendChildComponent();
+  }
+
+  appendChildComponent() {
     new TodoForm({
-      $target: $("#todo-form"),
-      onSubmit: this.handleSubmit,
+      $app: $("#todo-form"),
+      initialState: this.state.todoField,
+      onSubmit: this.handleSubmit.bind(this),
     });
 
     this.todoList = new TodoList({
       $app: $("main"),
-      todos: this.state.todos,
+      initialState: this.state.todos,
       onTodoDelete: this.handleTodoDelete.bind(this),
     });
 
