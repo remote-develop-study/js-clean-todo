@@ -28,6 +28,7 @@ export default class App {
     $app.innerHTML = `
       <h1>TODOS</h1>
       <form id="todo-form"></form>
+      <main id="todo-form"></main>
     `;
 
     this.render();
@@ -46,12 +47,12 @@ export default class App {
     });
 
     this.todoList = new TodoList({
-      $app: this.$app,
+      $app: $("main"),
       todos: this.state.todos,
       onTodoDelete: this.handleTodoDelete.bind(this),
     });
 
-    new TodoCountContainer({ $app: this.$app });
+    new TodoCountContainer({ $app: $("main") });
   }
 
   handleSubmit(name) {
