@@ -1,21 +1,34 @@
 import { createElement } from "../utils/domCreator.js";
 
 export default class TodoList {
-  constructor({ $app, todos }) {
+  constructor({ $app, todos, onTodoDelete }) {
     this.state = todos;
 
     this.$list = createElement("ul");
     this.$list.className = "todo-list";
 
+    this.onTodoDelete = onTodoDelete;
+
     $app.appendChild(this.$list);
 
     this.render();
+    this.setEvent();
   }
 
   setState(nextState) {
     this.state = nextState;
 
     this.render();
+  }
+
+  setEvent() {
+    this.$list.addEventListener("click", (e) => {
+      if (e.target.closest(".destroy")) {
+        const id = e.target.closest("li").id;
+
+        this.onTodoDelete(id);
+      }
+    });
   }
 
   render() {

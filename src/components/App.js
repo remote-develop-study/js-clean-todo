@@ -48,6 +48,7 @@ export default class App {
     this.todoList = new TodoList({
       $app: this.$app,
       todos: this.state.todos,
+      onTodoDelete: this.handleTodoDelete.bind(this),
     });
 
     new TodoCountContainer({ $app: this.$app });
@@ -67,6 +68,17 @@ export default class App {
     this.setState({
       ...this.state,
       todos: [...todos, newTodo],
+    });
+  }
+
+  handleTodoDelete(id) {
+    const { todos } = this.state;
+
+    const filterTodos = todos.filter((todo) => todo.id !== Number(id));
+
+    this.setState({
+      ...this.state,
+      todos: filterTodos,
     });
   }
 }
