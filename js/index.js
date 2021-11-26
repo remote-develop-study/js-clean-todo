@@ -17,8 +17,7 @@ function App() {
     $('.todo-count strong').innerText = todoCount
   }
 
-  // enter를 누르면 item의 이름을 입력받는다.
-  $('#new-todo-title').addEventListener('keypress', (e) => {
+  $('#new-todo-title').addEventListener('keyup', (e) => {
     if ($('#new-todo-title').value.trim() === '') {
       return
     }
@@ -42,6 +41,38 @@ function App() {
       e.target.closest('li').remove()
 
       updateItemCount()
+    }
+  })
+
+  $('#todo-list').addEventListener('dblclick', (e) => {
+    e.target.closest('li').classList.add('editing')
+  })
+
+  $('#todo-list').addEventListener('keyup', (e) => {
+    const $edit = e.target.closest('li').querySelector('.edit')
+    const $label = e.target.closest('li').querySelector('.label')
+
+    const removeEditing = (e) => {
+      e.target.closest('li').classList.remove('editing')
+    }
+
+    if (e.key === 'Escape') {
+      $edit.value = $label.innerText
+      removeEditing(e)
+
+      return
+    }
+
+    if (e.key === 'Enter') {
+      if ($edit.value.trim() === '') {
+        $edit.value = $label.innerText
+        removeEditing(e)
+
+        return
+      }
+
+      $label.innerText = $edit.value
+      removeEditing(e)
     }
   })
 }
