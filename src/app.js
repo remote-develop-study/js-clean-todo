@@ -47,12 +47,43 @@ const todoApp = () => {
     model.todo = model.todo.filter((item) => item.id !== +target.id);
   };
 
+  const patchTodo = ({ target, key }) => {
+    const targetItem = target.closest('li');
+
+    if (!targetItem.classList.contains('editing')) return;
+
+    if (key === 'Enter') {
+      targetItem.classList.remove('editing');
+      model.todo = model.todo.map((item) => {
+        if (item.id === +targetItem.id) {
+          item.text = target.value;
+        }
+
+        return item;
+      });
+    }
+
+    if (key === 'Escape') {
+      targetItem.classList.remove('editing');
+
+      model.todo = [...model.todo];
+    }
+  };
+
+  const updateTodo = ({ target }) => {
+    if (!target.classList.contains('label')) return;
+
+    target.closest('li').classList.add('editing');
+  };
+
   return {
     init: () => {
       model.todo = initialState;
 
       $newTodo.addEventListener('keyup', addTodo);
       $todoList.addEventListener('click', deleteTodo);
+      $todoList.addEventListener('dblclick', updateTodo);
+      $todoList.addEventListener('keyup', patchTodo);
     },
   };
 };
