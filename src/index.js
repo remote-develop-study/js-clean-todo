@@ -1,14 +1,7 @@
-import { addTodoItem, removeTodoItem } from './handler/todoItem';
-import { $ } from './utils/querySelector';
-
-const app = () => {
-  const $todoList = $('.todo-list');
-  const $newTodo = $('.new-todo');
-
-  $todoList.addEventListener('click', removeTodoItem);
-  $newTodo.addEventListener('keyup', (e) => addTodoItem(e, $todoList));
-};
+import todoApp from './app';
 
 window.onload = () => {
-  app();
+  const app = todoApp();
+
+  app.init();
 };

@@ -14,5 +14,6 @@ module.exports = {
     'no-param-reassign': 0,
     'arrow-body-style': 0,
     'import/prefer-default-export': 0,
+    'no-shadow': 0,
   },
 };
