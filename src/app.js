@@ -17,11 +17,13 @@ const initialState = [
 const todoApp = () => {
   const $todoList = $('.todo-list');
   const $newTodo = $('.new-todo');
+  const $todoCount = $('.todo-count > strong');
 
   const model = Model({
     observable: [],
     renderer: () => {
       $todoList.innerHTML = TodoList(model.todo);
+      $todoCount.innerHTML = model.todo.length;
     },
   });
 
