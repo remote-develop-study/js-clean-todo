@@ -1,4 +1,5 @@
 import TodoList from './components/TodoList';
+import { CLASS, ELEMENT } from './constant/dom';
 import Model from './model/Model';
 import { $ } from './utils/querySelector';
 import { isEmptyString } from './utils/validator';
@@ -15,9 +16,9 @@ const initialState = [
 ];
 
 const todoApp = () => {
-  const $todoList = $('.todo-list');
-  const $newTodo = $('.new-todo');
-  const $todoCount = $('.todo-count > strong');
+  const $todoList = $(ELEMENT.TODO_LIST);
+  const $newTodo = $(ELEMENT.NEW_TODO);
+  const $todoCount = $(ELEMENT.TODO_COUNT);
 
   const model = Model({
     observable: [],
@@ -44,7 +45,7 @@ const todoApp = () => {
   };
 
   const deleteTodo = ({ target }) => {
-    if (!target.classList.contains('destroy')) return;
+    if (!target.classList.contains(CLASS.DESTROY)) return;
 
     model.todo = model.todo.filter((item) => item.id !== +target.id);
   };
@@ -52,10 +53,10 @@ const todoApp = () => {
   const patchTodo = ({ target, key }) => {
     const targetItem = target.closest('li');
 
-    if (!targetItem.classList.contains('editing')) return;
+    if (!targetItem.classList.contains(CLASS.EDITING)) return;
 
     if (key === 'Enter') {
-      targetItem.classList.remove('editing');
+      targetItem.classList.remove(CLASS.EDITING);
       model.todo = model.todo.map((item) => {
         if (item.id === +targetItem.id) {
           item.text = target.value;
@@ -66,16 +67,16 @@ const todoApp = () => {
     }
 
     if (key === 'Escape') {
-      targetItem.classList.remove('editing');
+      targetItem.classList.remove(CLASS.EDITING);
 
       model.todo = [...model.todo];
     }
   };
 
   const updateTodo = ({ target }) => {
-    if (!target.classList.contains('label')) return;
+    if (!target.classList.contains(CLASS.LABEL)) return;
 
-    target.closest('li').classList.add('editing');
+    target.closest('li').classList.add(CLASS.EDITING);
   };
 
   return {
