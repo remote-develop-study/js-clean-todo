@@ -31,9 +31,9 @@
 
 <br />
 
-- [ ] Todo List에 Item을 더블 클릭하여 수정하기
-- [ ] Todo List를 더블클릭했을 때 input 모드로 변경 (li tag 에 editing class 추가) 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
-- [ ] Todo List의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
+- [x] Todo List에 Item을 더블 클릭하여 수정하기
+- [x] Todo List를 더블클릭했을 때 input 모드로 변경 (li tag 에 editing class 추가) 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
+- [x] Todo List의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
 
 ---
 
