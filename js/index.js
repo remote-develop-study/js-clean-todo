@@ -1,6 +1,11 @@
 const $ = (selector) => document.querySelector(selector)
 
 function App() {
+  const $newTodoTitle = $('#new-todo-title')
+
+  const $edit = (e) => e.target.closest('li').querySelector('.edit')
+  const $label = (e) => e.target.closest('li').querySelector('.label')
+
   const todoTemplate = (newTodoTitle) => {
     return `<li>
       <div class="view">
@@ -17,64 +22,68 @@ function App() {
     $('.todo-count strong').innerText = todoCount
   }
 
-  $('#new-todo-title').addEventListener('keyup', (e) => {
-    if ($('#new-todo-title').value.trim() === '') {
+  const removeEditing = (e) => {
+    e.target.closest('li').classList.remove('editing')
+  }
+
+  const addTodo = (e) => {
+    if ($newTodoTitle.value.trim() === '') {
       return
     }
 
     if (e.key === 'Enter') {
-      const newTodoTitle = $('#new-todo-title').value
+      const newTodoTitle = $newTodoTitle.value
 
       $('#todo-list').insertAdjacentHTML(
         'beforeend',
         todoTemplate(newTodoTitle)
       )
 
-      $('#new-todo-title').value = ''
+      $newTodoTitle.value = ''
 
       updateItemCount()
     }
-  })
+  }
 
-  $('#todo-list').addEventListener('click', (e) => {
+  const removeTodo = (e) => {
     if (e.target.classList.contains('destroy')) {
       e.target.closest('li').remove()
 
       updateItemCount()
     }
-  })
+  }
 
-  $('#todo-list').addEventListener('dblclick', (e) => {
+  const editTodo = (e) => {
     e.target.closest('li').classList.add('editing')
-  })
+    $edit(e).focus()
+    $edit(e).setSelectionRange($edit(e).value.length, $edit(e).value.length)
+  }
 
-  $('#todo-list').addEventListener('keyup', (e) => {
-    const $edit = e.target.closest('li').querySelector('.edit')
-    const $label = e.target.closest('li').querySelector('.label')
-
-    const removeEditing = (e) => {
-      e.target.closest('li').classList.remove('editing')
-    }
-
+  const updateTodo = (e) => {
     if (e.key === 'Escape') {
-      $edit.value = $label.innerText
+      $edit(e).value = $label(e).innerText
       removeEditing(e)
 
       return
     }
 
     if (e.key === 'Enter') {
-      if ($edit.value.trim() === '') {
-        $edit.value = $label.innerText
+      if ($edit(e).value.trim() === '') {
+        $edit(e).value = $label(e).innerText
         removeEditing(e)
 
         return
       }
 
-      $label.innerText = $edit.value
+      $label(e).innerText = $edit(e).value
       removeEditing(e)
     }
-  })
+  }
+
+  $('#new-todo-title').addEventListener('keyup', addTodo)
+  $('#todo-list').addEventListener('click', removeTodo)
+  $('#todo-list').addEventListener('dblclick', editTodo)
+  $('#todo-list').addEventListener('keyup', updateTodo)
 }
 
 App()
