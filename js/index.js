@@ -2,6 +2,7 @@ import { $ } from './utils/dom.js'
 
 function App() {
   this.list = []
+  this.currentTodo = 'all'
 
   this.init = () => {
     initEventListener()
@@ -9,16 +10,33 @@ function App() {
 
   const $newTodoTitle = $('#new-todo-title')
 
-  const listId = (e) => e.target.closest('li').dataset.listId
   const $edit = (e) => e.target.closest('li').querySelector('.edit')
   const $label = (e) => e.target.closest('li').querySelector('.label')
 
   const render = () => {
+    if (this.currentTodo === 'all') {
+      allRender()
+
+      return
+    }
+
+    if (this.currentTodo === 'active') {
+      activeRender()
+
+      return
+    }
+
+    if (this.currentTodo === 'completed') {
+      completedRender()
+
+      return
+    }
+  }
+
+  const allRender = () => {
     const template = this.list
-      .map((listItem, index) => {
-        return `<li data-list-id="${index}" class="${
-          listItem.completed && 'completed'
-        }">
+      .map((listItem) => {
+        return `<li class="${listItem.completed && 'completed'}">
           <div class="view">
             <input class="toggle" type="checkbox" ${
               listItem.completed && 'checked'
@@ -40,10 +58,8 @@ function App() {
         (listItem) =>
           listItem.completed === undefined || listItem.completed === false
       )
-      .map((listItem, index) => {
-        return `<li data-list-id="${index}" class="${
-          listItem.completed && 'completed'
-        }">
+      .map((listItem) => {
+        return `<li>
           <div class="view">
             <input class="toggle" type="checkbox" />
             <label class="label">${listItem.title}</label>
@@ -60,10 +76,8 @@ function App() {
   const completedRender = () => {
     const template = this.list
       .filter((listItem) => listItem.completed === true)
-      .map((listItem, index) => {
-        return `<li data-list-id="${index}" class="${
-          listItem.completed && 'completed'
-        }">
+      .map((listItem) => {
+        return `<li class="completed">
           <div class="view">
             <input class="toggle" type="checkbox" checked />
             <label class="label">${listItem.title}</label>
@@ -78,7 +92,7 @@ function App() {
   }
 
   const updateItemCount = () => {
-    const todoCount = $('#todo-list').querySelectorAll('li').length
+    const todoCount = this.list.length
     $('.todo-count strong').innerText = todoCount
   }
 
@@ -86,41 +100,73 @@ function App() {
     e.target.closest('li').classList.remove('editing')
   }
 
+  const resetNewTodoTitle = () => {
+    $newTodoTitle.value = ''
+  }
+
+  const findTextIndex = (e) => {
+    return this.list.findIndex(
+      (listItem) => listItem.title === $label(e).innerText
+    )
+  }
+
   const addTodo = (e) => {
-    if ($newTodoTitle.value.trim() === '') {
+    if (e.key !== 'Enter') {
       return
     }
 
-    if (e.key === 'Enter') {
-      const newTodoTitle = $newTodoTitle.value
-      this.list.push({ title: newTodoTitle })
-      $newTodoTitle.value = ''
-      render()
+    if ($newTodoTitle.value.trim() === '') {
+      resetNewTodoTitle()
 
-      updateItemCount()
+      return
     }
+
+    if (
+      this.list.findIndex(
+        (listItem) => listItem.title === $newTodoTitle.value
+      ) !== -1
+    ) {
+      resetNewTodoTitle()
+
+      return
+    }
+
+    const newTodoTitle = $newTodoTitle.value
+    this.list.push({ title: newTodoTitle })
+    resetNewTodoTitle()
+    render()
+
+    updateItemCount()
   }
 
   const removeTodo = (e) => {
-    this.list.splice(listId(e), 1)
+    this.list.splice(findTextIndex(e), 1)
     render()
 
     updateItemCount()
   }
 
   const completeTodo = (e) => {
-    this.list[listId(e)].completed = !this.list[listId(e)].completed
-    console.log(this.list[listId(e)])
+    this.list[findTextIndex(e)].completed =
+      !this.list[findTextIndex(e)].completed
     render()
   }
 
   const editTodo = (e) => {
+    if (e.target.closest('li').classList.contains('completed')) {
+      return
+    }
+
     e.target.closest('li').classList.add('editing')
     $edit(e).focus()
     $edit(e).setSelectionRange($edit(e).value.length, $edit(e).value.length)
   }
 
   const updateTodo = (e) => {
+    if (e.key !== 'Escape' && e.key !== 'Enter') {
+      return
+    }
+
     if (e.key === 'Escape') {
       $edit(e).value = $label(e).innerText
       removeEditing(e)
@@ -136,8 +182,8 @@ function App() {
         return
       }
 
-      this.list[listId(e)].title = $edit(e).value
-      render()
+      this.list[findTextIndex(e)].title = $edit(e).value
+      $label(e).innerText = $edit(e).value
 
       removeEditing(e)
     }
@@ -157,19 +203,21 @@ function App() {
     }
   }
 
-  const filterRender = (e) => {
+  const moveRender = (e) => {
     for (let i = 1; i <= $('.filters').querySelectorAll('li').length; i++) {
       $(`.filters li:nth-child(${i}) a`).classList.remove('selected')
     }
 
     if (e.target.classList.contains('all')) {
+      this.currentTodo = 'all'
       e.target.classList.add('selected')
-      render()
+      allRender()
 
       return
     }
 
     if (e.target.classList.contains('active')) {
+      this.currentTodo = 'active'
       e.target.classList.add('selected')
       activeRender()
 
@@ -177,6 +225,7 @@ function App() {
     }
 
     if (e.target.classList.contains('completed')) {
+      this.currentTodo = 'completed'
       e.target.classList.add('selected')
       completedRender()
 
@@ -189,7 +238,7 @@ function App() {
     $('#todo-list').addEventListener('click', handleTodo)
     $('#todo-list').addEventListener('dblclick', editTodo)
     $('#todo-list').addEventListener('keyup', updateTodo)
-    $('.filters').addEventListener('click', filterRender)
+    $('.filters').addEventListener('click', moveRender)
   }
 }
 
