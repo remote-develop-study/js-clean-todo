@@ -1,10 +1,17 @@
 import { $ } from './utils/dom.js'
+import store from './store/index.js'
 
 function App() {
   this.list = []
   this.currentTodo = 'all'
 
   this.init = () => {
+    if (store.getLocalStorage()) {
+      this.list = store.getLocalStorage()
+    }
+
+    render()
+
     initEventListener()
   }
 
@@ -16,21 +23,17 @@ function App() {
   const render = () => {
     if (this.currentTodo === 'all') {
       allRender()
-
-      return
     }
 
     if (this.currentTodo === 'active') {
       activeRender()
-
-      return
     }
 
     if (this.currentTodo === 'completed') {
       completedRender()
-
-      return
     }
+
+    updateItemCount()
   }
 
   const allRender = () => {
@@ -133,22 +136,24 @@ function App() {
 
     const newTodoTitle = $newTodoTitle.value
     this.list.push({ title: newTodoTitle })
+    store.setLocalStorage(this.list)
     resetNewTodoTitle()
-    render()
 
-    updateItemCount()
+    render()
   }
 
   const removeTodo = (e) => {
     this.list.splice(findTextIndex(e), 1)
-    render()
+    store.setLocalStorage(this.list)
 
-    updateItemCount()
+    render()
   }
 
   const completeTodo = (e) => {
     this.list[findTextIndex(e)].completed =
       !this.list[findTextIndex(e)].completed
+    store.setLocalStorage(this.list)
+
     render()
   }
 
@@ -183,7 +188,9 @@ function App() {
       }
 
       this.list[findTextIndex(e)].title = $edit(e).value
-      $label(e).innerText = $edit(e).value
+      store.setLocalStorage(this.list)
+
+      render()
 
       removeEditing(e)
     }
